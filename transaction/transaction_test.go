@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/silvan-talos/tlp"
+	"github.com/silvan-talos/tlp/logging"
 	"github.com/silvan-talos/tlp/mock"
 	"github.com/silvan-talos/tlp/transaction"
 )
@@ -19,9 +19,9 @@ func startTransactionSuccessfully(t *testing.T) {
 	t.Parallel()
 
 	tracer := transaction.NewTracer(&mock.TransactionRecorder{})
-	tx, ctx := tracer.StartTransaction(context.Background(), "test", "unit-test", tlp.NewAttr("env", "test"))
+	tx, ctx := tracer.StartTransaction(context.Background(), "test", "unit-test", logging.NewAttr("env", "test"))
 	require.NotNil(t, tx, "expected transaction to be not nil")
-	require.Contains(t, tx.Attrs, tlp.NewAttr("env", "test"), "returned transaction should contain the custom attrs")
+	require.Contains(t, tx.Attrs, logging.NewAttr("env", "test"), "returned transaction should contain the custom attrs")
 	ctxTx := transaction.FromContext(ctx)
 	require.Equal(t, tx, ctxTx, "retrieved transaction should be the same")
 	tx.End()

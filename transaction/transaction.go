@@ -5,18 +5,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/silvan-talos/tlp"
+	"github.com/silvan-talos/tlp/logging"
 )
 
 var defaultTracer atomic.Pointer[Tracer]
 
-func init() {
-	defaultTracer.Store(NewTracer(nil))
-}
-
 type Transaction struct {
 	TraceID string
-	Attrs   []tlp.Attr
+	Attrs   []logging.Attr
 
 	start    time.Time
 	duration time.Duration
@@ -46,14 +42,17 @@ type Tracer struct {
 
 func DefaultTracer() *Tracer {
 	return defaultTracer.Load()
+}
 
+func SetDefaultTracer(t *Tracer) {
+	defaultTracer.Store(t)
 }
 
 func NewTracer(recorder Recorder) *Tracer {
 	return &Tracer{recorder: recorder}
 }
 
-func (t *Tracer) StartTransaction(ctx context.Context, name, transactionType string, attrs ...tlp.Attr) (*Transaction, context.Context) {
+func (t *Tracer) StartTransaction(ctx context.Context, name, transactionType string, attrs ...logging.Attr) (*Transaction, context.Context) {
 	tx, ctx := t.recorder.RecordTransaction(ctx, name, transactionType)
 	tx.Attrs = append(tx.Attrs, attrs...)
 	tx.start = time.Now()

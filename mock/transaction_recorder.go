@@ -3,7 +3,7 @@ package mock
 import (
 	"context"
 
-	"github.com/silvan-talos/tlp"
+	"github.com/silvan-talos/tlp/logging"
 	"github.com/silvan-talos/tlp/transaction"
 )
 
@@ -17,7 +17,7 @@ func (tr *TransactionRecorder) RecordTransaction(ctx context.Context, name, tran
 	}
 	return &transaction.Transaction{
 		TraceID: "test-trace",
-		Attrs: []tlp.Attr{
+		Attrs: []logging.Attr{
 			{
 				Key:   "name",
 				Value: name,
