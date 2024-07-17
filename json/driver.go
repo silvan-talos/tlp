@@ -10,8 +10,6 @@ import (
 	"github.com/silvan-talos/tlp/logging"
 )
 
-const dateFormat = "2006-01-02 15:04:05.000"
-
 type Driver struct {
 	writer *bufio.Writer
 }

@@ -19,7 +19,7 @@ type userHandler struct {
 func (uh *userHandler) addRoutes(r *gin.RouterGroup) {
 	r.GET("/:id", uh.getUser)
 	r.POST("/", uh.createUser)
-	r.PUT("/:id", uh.updateUser)
+	r.PATCH("/:id", uh.updateUser)
 	r.DELETE("/:id", uh.deleteUser)
 }
 

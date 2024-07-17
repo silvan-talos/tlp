@@ -42,8 +42,8 @@ func (ur *UserRepository) Get(ctx context.Context, id int64) (*user.User, error)
 	}
 	return &user.User{
 		ID:   1,
-		Name: "Unit Test",
-		Age:  120,
+		Name: "Andrei Popescu",
+		Age:  53,
 	}, nil
 }
 

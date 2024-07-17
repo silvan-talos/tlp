@@ -1,6 +1,6 @@
 module github.com/silvan-talos/tlp
 
-go 1.22.3
+go 1.22
 
 require (
 	github.com/go-playground/validator/v10 v10.22.0

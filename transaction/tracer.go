@@ -28,7 +28,7 @@ func FromContext(ctx context.Context) *Transaction {
 	return tx
 }
 
-func NewContext(ctx context.Context, tx *Transaction) context.Context {
+func (tx *Transaction) NewContext(ctx context.Context) context.Context {
 	return context.WithValue(ctx, transactionKey{}, tx)
 }
 
@@ -56,14 +56,14 @@ func (t *Tracer) StartTransaction(ctx context.Context, name, transactionType str
 	tx, ctx := t.recorder.RecordTransaction(ctx, name, transactionType)
 	tx.Attrs = append(tx.Attrs, attrs...)
 	tx.start = time.Now()
-	ctx = NewContext(ctx, tx)
+	ctx = tx.NewContext(ctx)
 	return tx, ctx
 }
 
-func (t *Transaction) End() {
-	t.duration = time.Now().Sub(t.start)
+func (tx *Transaction) End() {
+	tx.duration = time.Now().Sub(tx.start)
 }
 
-func (t *Transaction) GetDuration() time.Duration {
-	return t.duration
+func (tx *Transaction) GetDuration() time.Duration {
+	return tx.duration
 }
