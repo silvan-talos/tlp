@@ -1,10 +1,10 @@
 log:
-  level: info
-  processing: plain
+  level: debug
+  processing: plain # or json
   output_file: # falls back to stdout if no file is provided
   permanent_attributes:
-    - env: test
+    - env: dev
     - app_name: example
 
 transaction:
-  recorder: dummy
+  recorder: apm # or dummy

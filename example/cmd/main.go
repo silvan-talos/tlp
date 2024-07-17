@@ -13,7 +13,6 @@ import (
 	"github.com/silvan-talos/tlp/example/mysql"
 	"github.com/silvan-talos/tlp/example/user"
 	"github.com/silvan-talos/tlp/log"
-	"github.com/silvan-talos/tlp/logging"
 )
 
 var logLevel = &cli.StringFlag{
@@ -42,15 +41,13 @@ func newCLIApp() *cli.App {
 }
 
 func startServer(cliCtx *cli.Context) error {
-	logLevelFlag := cliCtx.String(logLevel.Name)
-	logger, err := log.Default().WithAttrs(
-		logging.NewAttr("server", "example"),
-		logging.NewAttr("env", "dev"),
-	).WithLevel(logLevelFlag)
-	if err != nil {
-		return fmt.Errorf("create logger: %w", err)
-	}
-	log.SetDefault(logger)
+	// for configuring from code
+	// logLevelFlag := cliCtx.String(logLevel.Name)
+	// logger, err := log.Default().WithLevel(logLevelFlag)
+	// if err != nil {
+	// 	return fmt.Errorf("create logger: %w", err)
+	// }
+	// log.SetDefault(logger)
 
 	exitChan := make(chan error, 1)
 	go func() {

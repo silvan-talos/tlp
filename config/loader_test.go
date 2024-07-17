@@ -23,7 +23,7 @@ func loadFromExampleYAML(t *testing.T) {
 	if err != nil {
 		t.Fatalf("load from yaml err: %s", err)
 	}
-	require.EqualValues(t, config.Config{LogLevel: "debug"}, cfg, "configuration should be correctly loaded")
+	require.EqualValues(t, "info", cfg.Log.Level, "configuration should be correctly loaded")
 }
 
 func configFileNotFound(t *testing.T) {

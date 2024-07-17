@@ -2,11 +2,16 @@ package log
 
 import (
 	"context"
+	"fmt"
+	"os"
+	"strings"
 	"sync/atomic"
 	"time"
 
 	"github.com/silvan-talos/tlp/apm"
 	"github.com/silvan-talos/tlp/config"
+	"github.com/silvan-talos/tlp/dummy"
+	"github.com/silvan-talos/tlp/json"
 	"github.com/silvan-talos/tlp/logging"
 	"github.com/silvan-talos/tlp/text"
 	"github.com/silvan-talos/tlp/transaction"
@@ -15,13 +20,26 @@ import (
 var defaultLogger atomic.Pointer[Logger]
 
 func init() {
-	transaction.SetDefaultTracer(transaction.NewTracer(apm.NewRecorder()))
 	var cfg config.Config
-	err := config.LoadFromYAML("config.yml", &cfg)
+	err := config.LoadFromYAML("log-config.yml", &cfg)
 	if err != nil {
+		fmt.Println("load config error", "err", err)
+		transaction.SetDefaultTracer(transaction.NewTracer(dummy.NewRecorder()))
 		defaultLogger.Store(NewLogger(text.NewDriver(nil), logging.LevelInfo))
 		return
 	}
+	interpretConfig(cfg)
+}
+
+func interpretConfig(cfg config.Config) {
+	var recorder transaction.Recorder
+	if cfg.Transaction.RecorderType != "" && strings.EqualFold(cfg.Transaction.RecorderType, "apm") {
+		recorder = apm.NewRecorder()
+	} else {
+		recorder = dummy.NewRecorder()
+	}
+	transaction.SetDefaultTracer(transaction.NewTracer(recorder))
+	defaultLogger.Store(NewLoggerFromConfig(cfg.Log))
 }
 
 type Driver interface {
@@ -39,6 +57,42 @@ func NewLogger(driver Driver, level logging.Level) *Logger {
 		driver: driver,
 		level:  level,
 	}
+}
+
+func NewLoggerFromConfig(cfg config.LogConfig) *Logger {
+	output := os.Stdout
+	if cfg.OutputFile != "" {
+		f, err := os.OpenFile(cfg.OutputFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err == nil {
+			output = f
+		} else {
+			fmt.Println("open file", err)
+		}
+	}
+	var driver Driver
+	switch cfg.ProcessingType {
+	case "json":
+		driver = json.NewDriver(output)
+	default:
+		driver = text.NewDriver(output)
+	}
+	lvl := logging.LevelInfo
+	if cfg.Level != "" {
+		if l, err := logging.ParseLevel(cfg.Level); err == nil {
+			lvl = l
+		}
+	}
+	logger := NewLogger(driver, lvl)
+	if cfg.PermanentAttributes != nil {
+		attrs := make([]logging.Attr, 0, 1)
+		for _, item := range cfg.PermanentAttributes {
+			for k, v := range item {
+				attrs = append(attrs, logging.Attr{Key: k, Value: v})
+			}
+		}
+		logger = logger.WithAttrs(attrs...)
+	}
+	return logger
 }
 
 func SetDefault(l *Logger) {
