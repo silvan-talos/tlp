@@ -1,3 +1,4 @@
+// Package config provides the means to load and decode configuration files.
 package config
 
 import (

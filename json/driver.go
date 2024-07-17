@@ -1,3 +1,4 @@
+// Package json provides a basic JSON driver.
 package json
 
 import (

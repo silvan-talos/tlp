@@ -47,7 +47,7 @@ func startServer(cliCtx *cli.Context) error {
 	// if err != nil {
 	// 	return fmt.Errorf("create logger: %w", err)
 	// }
-	// log.SetDefault(logger)
+	// logger.SetDefault()
 
 	exitChan := make(chan error, 1)
 	go func() {

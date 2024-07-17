@@ -1,3 +1,4 @@
+// Package mock contains mocks used in unit tests.
 package mock
 
 import (

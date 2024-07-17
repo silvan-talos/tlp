@@ -1,0 +1,28 @@
+# @name Get user
+GET localhost:8080/users/1
+
+###
+
+# @name Create user
+POST localhost:8080/users
+Content-Type: application/json
+
+{
+  "name": "George Popescu",
+  "age": 42
+}
+
+###
+
+# @name Update user age
+PUT localhost:8080/users/1
+Content-Type: application/json
+
+{
+  "age": 43
+}
+
+###
+
+# @name Delete user
+DELETE localhost:8080/users/1

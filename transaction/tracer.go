@@ -1,3 +1,4 @@
+// Package transaction is the main package for transaction tracing logic.
 package transaction
 
 import (

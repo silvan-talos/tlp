@@ -1,3 +1,4 @@
+// Package dummy is a `Recorder` interface implementation that simply generates a uuid TraceID.
 package dummy
 
 import (
@@ -8,9 +9,9 @@ import (
 	"github.com/silvan-talos/tlp/transaction"
 )
 
-type Recorder struct {
-	// dummy recorder that sets an uuid as TraceID
-}
+// Recorder is a dummy implementation of a trace recorder.
+// It simply sets an uuid as TraceID.
+type Recorder struct{}
 
 func NewRecorder() *Recorder {
 	return &Recorder{}

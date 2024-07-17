@@ -1,3 +1,5 @@
+// Package log is the main package of the library.
+// It provides the interaction with the logging library and facilitates the initialization based on the config file.
 package log
 
 import (
@@ -95,7 +97,7 @@ func NewLoggerFromConfig(cfg config.LogConfig) *Logger {
 	return logger
 }
 
-func SetDefault(l *Logger) {
+func (l *Logger) SetDefault() {
 	defaultLogger.Store(l)
 }
 
@@ -128,12 +130,14 @@ func (l *Logger) Log(ctx context.Context, level logging.Level, msg string, args 
 	l.driver.Log(ctx, entry)
 }
 
+// WithAttrs creates a copy of the receiver logger and sets an attribute list to be logged for each message.
 func (l *Logger) WithAttrs(attrs ...logging.Attr) *Logger {
 	clone := *l
 	clone.attrs = append(clone.attrs, attrs...)
 	return &clone
 }
 
+// WithLevel returns a copy of the original logger with the desired log-level set, if parsable.
 func (l *Logger) WithLevel(level string) (*Logger, error) {
 	lvl, err := logging.ParseLevel(level)
 	if err != nil {

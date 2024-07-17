@@ -1,3 +1,4 @@
+// Package apm mimics a real trace recorder integration.
 package apm
 
 import (
@@ -8,6 +9,7 @@ import (
 	"github.com/silvan-talos/tlp/transaction"
 )
 
+// Recorder is the implementation of an APM trace recorder.
 type Recorder struct {
 	// create specific APM tracer instead of using the default
 }

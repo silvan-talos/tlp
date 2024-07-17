@@ -1,3 +1,4 @@
+// Package logging contains logging helpers like level, attribute and entry and functions related to them.
 package logging
 
 import (

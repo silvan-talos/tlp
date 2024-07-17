@@ -34,6 +34,6 @@ func NewServer(us *user.Service) *Server {
 }
 
 func (s *Server) Serve(lis net.Listener) error {
-	log.Info(context.Background(), "Starting http server", "address", lis.Addr().String())
+	log.Default().Log(context.Background(), 100, "Starting http server", "address", lis.Addr().String())
 	return s.router.RunListener(lis)
 }

@@ -1,5 +1,5 @@
 log:
-  level: debug
+  level: level(10)
   processing: plain # or json
   output_file: # falls back to stdout if no file is provided
   permanent_attributes:
