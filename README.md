@@ -62,7 +62,7 @@ func main() {
 
 #### Customize using code
 
-The [API documentation](https://pkg.go.dev/github.com/silvan-talos/tlp@v0.0.0-20240717010324-e2378fdccd57/log) provides
+The [API documentation](https://pkg.go.dev/github.com/silvan-talos/tlp@v1.0.0/log) provides
 a few options to customize logger behavior.
 
 `WithLevel` returns a copy of the original logger with the desired log-level
@@ -93,7 +93,7 @@ or `log.Default().Log(ctx, logging.Level(100), "message")`.
 ### Log drivers
 
 Any struct that implements
-the [`Driver` interface](https://pkg.go.dev/github.com/silvan-talos/tlp@v0.0.0-20240717010324-e2378fdccd57/log#Driver)
+the [`Driver` interface](https://pkg.go.dev/github.com/silvan-talos/tlp@v1.0.0/log#Driver)
 can be used as a driver. `tlp` provides you all the logging entry details, alongside the context you may use to extract
 other parameters. See [text driver](text/driver.go) and [JSON driver](json/driver.go) as example for driver
 implementations.
@@ -111,6 +111,6 @@ logger.SetDefault()
 ### Transaction recorders
 
 Any struct that implements
-the [`Recorder` interface](https://pkg.go.dev/github.com/silvan-talos/tlp@v0.0.0-20240717010324-e2378fdccd57/transaction#Recorder)
+the [`Recorder` interface](https://pkg.go.dev/github.com/silvan-talos/tlp@v1.0.0/transaction#Recorder)
 can be used as a transaction recorder. It offers the possibility to use an actual transaction tracer behind the scenes,
 while logging the provided TraceID as usual for correlation.
